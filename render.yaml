@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: mercedes-sales-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn src.app:server

@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+
+# keep large raw data local
+data/raw/*.csv
+
+# local env
+.venv/
