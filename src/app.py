@@ -7,6 +7,7 @@ from dash import Dash, Input, Output, callback_context, dcc, html
 
 def find_data_file() -> Path:
     candidates = [
+        Path("data/raw/mb_sales_sample_stratified.csv"),
         Path("data/raw/mercedes_benz_sales_2020_2025.csv"),
         Path("mercedes_benz_sales_2020_2025.csv"),
     ]

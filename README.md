@@ -41,8 +41,13 @@ pip install -r requirements.txt
 python src/app.py
 ```
 
-Before running, put the raw dataset at:
-`data/raw/mercedes_benz_sales_2020_2025.csv`
+The app will use this file by default:
+`data/raw/mb_sales_sample_stratified.csv`
+
+If you have the full raw dataset, you can rebuild samples with:
+```bash
+python src/build_samples.py
+```
 
 Then open the local link in your browser.
 

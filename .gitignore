@@ -2,7 +2,7 @@ __pycache__/
 *.pyc
 
 # keep large raw data local
-data/raw/*.csv
+data/raw/mercedes_benz_sales_2020_2025.csv
 
 # local env
 .venv/
