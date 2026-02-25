@@ -24,6 +24,11 @@ Main panels in the app:
 - price vs horsepower
 - top colors
 
+## Sketch
+This is our early layout sketch for dashboard design and interaction flow.
+
+![Dashboard sketch](./Sketch.png)
+
 ## Local setup
 ### 1) create environment (optional)
 ```bash
