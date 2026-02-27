@@ -76,6 +76,15 @@ DATA551_Project_G11_SUN_YAO_ZHAO/
 └── README.md
 ```
 
+## Future Improvements
+
+In future iterations, we plan to:
+
+- Conduct structured user testing and incorporate feedback
+- Improve performance optimization for large datasets
+- Introduce additional KPIs such as sales growth rate
+- Enhance visual consistency and accessibility
+
 ## For contributors
 Please read `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` first.
 You can open an issue for bugs, ideas, or feature requests.
