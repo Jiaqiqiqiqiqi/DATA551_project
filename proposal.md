@@ -1,7 +1,7 @@
 # Mercedes-Benz Sales Insights Dashboard (2020-2025)
 
 ## 1. Motivation and Purpose
-Our role: A student data consulting team working for a Mercedes-Benz retail analytics unit (or a dealer group’s planning team).
+Our role: A student data consulting team working for a Mercedes-Benz retail analytics unit.
 
 Target audience: Regional dealership managers who make quarterly inventory and showroom display decisions.
 
