@@ -10,19 +10,25 @@ Our main users are regional dealership managers.
 They need simple evidence for inventory and display decisions.
 
 ## What users can do
-- check fuel type trend by year
-- check top-selling models
-- compare price and horsepower patterns
-- check top color choices
-- filter data by year, model, fuel type, turbo, price, and horsepower
-- use one reset button to clear all filters
+- Check fuel type trend by year
+- Check top-selling models
+- Compare price and horsepower patterns
+- Check top color choices
+- Filter data by year, model, fuel type, turbo, price, and horsepower
+- Use one reset button to clear all filters
+
+## Interaction design / Dashboard layout
+- Global filters: Year range, Model, Fuel type, Turbo, Price range, and Horsepower range update all charts simultaneously.
+- Cross-filtering: clicking a category (e.g., a fuel type or a model bar) highlights and filters related records across the other panels for quick segment comparison.
+- Hover tooltips: hovering on marks reveals exact counts/percentages and key attributes to support precise reading.
+- Reset: a single reset button clears all filters/selections to return to the default overview state.
 
 ## Dashboard layout
 Main panels in the app:
-- fuel type sales trend
-- top models by sales
-- price vs horsepower
-- top colors
+- Fuel type sales trend
+- Top models by sales
+- Price vs horsepower
+- Top colors
 
 ## Sketch
 This is our early layout sketch for dashboard design and interaction flow.
@@ -76,6 +82,7 @@ You can open an issue for bugs, ideas, or feature requests.
 If you want to help, open a pull request to `main`.
 
 ## Team files
-- proposal: `proposal.md`
-- team contract: `team-contract.md`
-- milestone submission link: `canvas-submission.md`
+- Proposal: `proposal.md`
+- Team contract: `team-contract.md`
+- Milestone submission link: `canvas-submission.md`
+
