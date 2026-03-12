@@ -128,9 +128,10 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
         )
 
     color_scale = alt.Scale(domain=fuel_options)
+    regression_df = df.sample(min(4500, len(df)), random_state=42)
 
     lines = (
-        alt.Chart(df)
+        alt.Chart(regression_df)
         .transform_loess(
             "Horsepower",
             "Base Price (USD)",
