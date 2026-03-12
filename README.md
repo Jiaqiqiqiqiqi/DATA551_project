@@ -3,6 +3,7 @@
 Deployed app link: **https://data551-project.onrender.com/**
 
 This project is an interactive dashboard for Mercedes-Benz sales data from 2020 to 2025.
+This repository contains the Milestone 4 production-ready version.
 
 ## Why this project
 We are a student data consulting team.
@@ -12,23 +13,30 @@ They need simple evidence for inventory and display decisions.
 ## What users can do
 - Check fuel type trend by year
 - Check top-selling models
-- Compare price and horsepower patterns
+- Compare horsepower and price trends by fuel type using regression lines
 - Check top color choices
 - Filter data by year, model, fuel type, turbo, price, and horsepower
 - Use one reset button to clear all filters
 
 ## Interaction design / Dashboard layout
-- Global filters: Year range, Model, Fuel type, Turbo, Price range, and Horsepower range update all charts simultaneously.
-- Cross-filtering: clicking a category (e.g., a fuel type or a model bar) highlights and filters related records across the other panels for quick segment comparison.
-- Hover tooltips: hovering on marks reveals exact counts/percentages and key attributes to support precise reading.
+- Global filters: Year range, Model, Fuel type, Turbo, Price range, and Horsepower range drive the dashboard state.
+- Regression panel behavior: the horsepower-price regression chart shows all fuel types for trend comparison while still respecting the other active filters.
+- Hover tooltips: hovering on marks reveals exact values and key attributes to support precise reading.
 - Reset: a single reset button clears all filters/selections to return to the default overview state.
 
 ## Dashboard layout
 Main panels in the app:
 - Fuel type sales trend
 - Top models by sales
-- Horsepower vs Price
+- Horsepower vs Price (fuel-type regression)
 - Top colors
+
+## Milestone 4 Highlights
+- Final full-screen layout with a dedicated filter panel and KPI cards
+- Improved label readability for range filters
+- Refined chart titles and spacing for clearer interpretation
+- Feedback-driven redesign of the horsepower-price panel to grouped regression trends
+- Final reflection and feedback resolution documentation in `doc/`
 
 ## Sketch
 This is our early layout sketch for dashboard design and interaction flow.
@@ -80,10 +88,20 @@ DATA551_Project_G11_SUN_YAO_ZHAO/
 
 In future iterations, we plan to:
 
-- Conduct structured user testing and incorporate feedback
-- Improve performance optimization for large datasets
-- Introduce additional KPIs such as sales growth rate
-- Enhance visual consistency and accessibility
+- Add robust chart-to-chart click cross-filtering across all panels
+- Expand KPI set (e.g., growth and segment share indicators)
+- Add optional dark theme and accessibility presets
+- Improve performance for larger datasets beyond current sampled workflows
+
+## GitHub About (Milestone 4)
+Suggested About description:
+`Interactive Mercedes-Benz sales dashboard for dealership inventory insights (2020-2025).`
+
+Suggested About URL:
+`https://data551-project.onrender.com/`
+
+Suggested keywords/topics:
+`dash`, `altair`, `interactive-dashboard`, `regression`, `filters`, `automotive-analytics`
 
 ## For contributors
 Please read `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` first.
