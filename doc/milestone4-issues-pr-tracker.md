@@ -1,20 +1,15 @@
 # Milestone 4 Issue and PR Tracker
 
-Use this file to keep auditable links for course checking.
+[Use this file to keep auditable links for course checking.](https://github.com/ZihaoZhao02/DATA551_project/issues/9)
 
 ## Issues
 
-- Issue A (layout/usability): _link to be added on GitHub_
-- Issue B (regression chart redesign): _link to be added on GitHub_
-- Issue C (deployment/release readiness): _link to be added on GitHub_
+## Issues
+- Issue A (layout/usability): https://github.com/ZihaoZhao02/DATA551_project/issues/7
+- Issue B (regression chart redesign): https://github.com/ZihaoZhao02/DATA551_project/issues/8
+- Issue C (deployment/release readiness): https://github.com/ZihaoZhao02/DATA551_project/issues/9
 
 ## Pull Requests
+- PR 1 (layout + labeling updates): https://github.com/ZihaoZhao02/DATA551_project/pull/13
+- PR 2 (regression chart and final polish): https://github.com/ZihaoZhao02/DATA551_project/pull/14
 
-- PR 1 (layout + labeling updates): _link to be added on GitHub_
-- PR 2 (regression chart and final polish): _link to be added on GitHub_
-
-## Note
-
-If development was done directly on `main`, create retrospective issues and reference relevant commits in each issue body so TAs can still trace decisions and implementation history.
-Update note: Milestone 4 evidence links are being added through Issues and PRs.
-Update note 2: This branch records milestone-4 issue and PR traceability for grading.
