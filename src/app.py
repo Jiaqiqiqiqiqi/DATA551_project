@@ -43,7 +43,7 @@ turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
 app = Dash(__name__)
 server = app.server
-CHART_HEIGHT = 240
+CHART_HEIGHT = 180
 
 
 def chart_to_html(chart: alt.Chart) -> str:
@@ -236,10 +236,9 @@ def filter_data(
 
 app.layout = html.Div(
     [
-        html.H1("MERCEDES-BENZ SALES INSIGHTS DASHBOARD", style={"margin": "0"}),
-        html.P(
-            "Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors.",
-            style={"margin": "6px 0 0 0"},
+        html.H1(
+            "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
+            style={"margin": "0", "fontSize": "38px", "lineHeight": "1.1"},
         ),
         html.Div(
             [
@@ -254,7 +253,7 @@ app.layout = html.Div(
                             step=1,
                             marks={y: str(y) for y in range(year_min, year_max + 1)},
                         ),
-                        html.Div(style={"height": "8px"}),
+                        html.Div(style={"height": "4px"}),
                         html.Label("MODEL"),
                         dcc.Dropdown(
                             id="model-filter",
@@ -263,7 +262,7 @@ app.layout = html.Div(
                             multi=True,
                             placeholder="ALL MODELS",
                         ),
-                        html.Div(style={"height": "8px"}),
+                        html.Div(style={"height": "4px"}),
                         html.Label("FUEL TYPE"),
                         dcc.Dropdown(
                             id="fuel-filter",
@@ -272,7 +271,7 @@ app.layout = html.Div(
                             multi=True,
                             placeholder="ALL FUEL TYPES",
                         ),
-                        html.Div(style={"height": "8px"}),
+                        html.Div(style={"height": "4px"}),
                         html.Label("TURBO"),
                         dcc.Dropdown(
                             id="turbo-filter",
@@ -281,7 +280,7 @@ app.layout = html.Div(
                             multi=True,
                             placeholder="ALL TURBO SETTINGS",
                         ),
-                        html.Div(style={"height": "8px"}),
+                        html.Div(style={"height": "4px"}),
                         html.Label(id="price-range-label"),
                         dcc.RangeSlider(
                             id="price-range",
@@ -296,7 +295,7 @@ app.layout = html.Div(
                             },
                             tooltip={"placement": "bottom", "always_visible": False},
                         ),
-                        html.Div(style={"height": "8px"}),
+                        html.Div(style={"height": "4px"}),
                         html.Label(id="hp-range-label"),
                         dcc.RangeSlider(
                             id="hp-range",
@@ -315,15 +314,15 @@ app.layout = html.Div(
                             "RESET ALL FILTERS",
                             id="reset-btn",
                             n_clicks=0,
-                            style={"marginTop": "8px"},
+                            style={"marginTop": "4px"},
                         ),
                     ],
                     style={
-                        "width": "340px",
+                        "width": "300px",
                         "display": "flex",
                         "flexDirection": "column",
-                        "gap": "6px",
-                        "padding": "14px",
+                        "gap": "4px",
+                        "padding": "10px",
                         "border": "1px solid #e5e7eb",
                         "borderRadius": "10px",
                         "backgroundColor": "white",
@@ -333,7 +332,7 @@ app.layout = html.Div(
                     [
                         html.P(
                             id="status-line",
-                            style={"margin": "0", "fontWeight": "bold", "fontSize": "15px"},
+                            style={"margin": "0", "fontWeight": "bold", "fontSize": "14px"},
                         ),
                         html.Div(
                             [
@@ -362,20 +361,20 @@ app.layout = html.Div(
                                 "display": "grid",
                                 "gridTemplateColumns": "repeat(2, minmax(0, 1fr))",
                                 "gridTemplateRows": "repeat(2, minmax(0, 1fr))",
-                                "gap": "10px",
-                                "height": "calc(100vh - 130px)",
+                                "gap": "6px",
+                                "height": "calc(100vh - 86px)",
                                 "minHeight": "0",
                             },
                         ),
                     ],
-                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "8px"},
+                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "4px"},
                 ),
             ],
             style={
                 "display": "flex",
-                "gap": "12px",
-                "marginTop": "12px",
-                "height": "calc(100vh - 90px)",
+                "gap": "8px",
+                "marginTop": "8px",
+                "height": "calc(100vh - 52px)",
             },
         ),
     ],
@@ -383,10 +382,10 @@ app.layout = html.Div(
         "width": "100%",
         "maxWidth": "1800px",
         "margin": "0 auto",
-        "padding": "12px 14px",
+        "padding": "6px 8px",
         "boxSizing": "border-box",
         "overflow": "hidden",
-        "height": "100vh",
+        "height": "calc(100vh - 16px)",
     },
 )
 
