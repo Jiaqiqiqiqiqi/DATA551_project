@@ -155,11 +155,11 @@ def filter_data(
 
 app.layout = html.Div(
     [
-        html.H1("mercedes-benz sales insights dashboard"),
-        html.P("interactive app for model, fuel, price, horsepower, and color trends."),
+        html.H1("Mercedes-Benz Sales Insights Dashboard"),
+        html.P("Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors."),
         html.Div(
             [
-                html.Label("year range"),
+                html.Label("Year Range"),
                 dcc.RangeSlider(
                     id="year-range",
                     min=year_min,
@@ -175,7 +175,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Label("model"),
+                        html.Label("Model"),
                         dcc.Dropdown(
                             id="model-filter",
                             options=[{"label": m, "value": m} for m in model_options],
@@ -188,7 +188,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.Label("fuel type"),
+                        html.Label("Fuel Type"),
                         dcc.Dropdown(
                             id="fuel-filter",
                             options=[{"label": f, "value": f} for f in fuel_options],
@@ -201,7 +201,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.Label("turbo"),
+                        html.Label("Turbo"),
                         dcc.Dropdown(
                             id="turbo-filter",
                             options=[{"label": t, "value": t} for t in turbo_options],
@@ -219,7 +219,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Label("price range (usd)"),
+                        html.Label("Price Range (USD)"),
                         dcc.RangeSlider(
                             id="price-range",
                             min=price_min,
@@ -233,7 +233,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.Label("horsepower range"),
+                        html.Label("Horsepower Range"),
                         dcc.RangeSlider(
                             id="hp-range",
                             min=hp_min,
@@ -248,7 +248,7 @@ app.layout = html.Div(
             ],
             style={"display": "flex", "justifyContent": "space-between", "marginTop": "12px"},
         ),
-        html.Button("reset all filters", id="reset-btn", n_clicks=0, style={"marginTop": "16px"}),
+        html.Button("Reset All Filters", id="reset-btn", n_clicks=0, style={"marginTop": "16px"}),
         html.P(id="status-line", style={"marginTop": "8px", "fontWeight": "bold"}),
         html.Div(
             [
