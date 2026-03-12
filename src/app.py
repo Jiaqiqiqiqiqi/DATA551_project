@@ -252,15 +252,15 @@ app.layout = html.Div(
         html.P(id="status-line", style={"marginTop": "8px", "fontWeight": "bold"}),
         html.Div(
             [
-                html.Iframe(id="chart-fuel", style={"width": "100%", "height": "360px", "border": "0"}),
-                html.Iframe(id="chart-model", style={"width": "100%", "height": "360px", "border": "0"}),
-                html.Iframe(id="chart-price-hp", style={"width": "100%", "height": "360px", "border": "0"}),
-                html.Iframe(id="chart-color", style={"width": "100%", "height": "360px", "border": "0"}),
+                html.Iframe(id="chart-fuel", style={"width": "100%", "height": "420px", "border": "0", "overflow": "hidden"}),
+                html.Iframe(id="chart-model", style={"width": "100%", "height": "420px", "border": "0", "overflow": "hidden"}),
+                html.Iframe(id="chart-price-hp", style={"width": "100%", "height": "420px", "border": "0", "overflow": "hidden"}),
+                html.Iframe(id="chart-color", style={"width": "100%", "height": "420px", "border": "0", "overflow": "hidden"}),
             ],
             style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "12px"},
         ),
     ],
-    style={"maxWidth": "1280px", "margin": "0 auto", "padding": "16px"},
+    style={"width": "100%", "maxWidth": "1600px", "margin": "0 auto", "padding": "24px"},
 )
 
 
