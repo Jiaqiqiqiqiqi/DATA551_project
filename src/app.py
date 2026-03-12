@@ -119,57 +119,35 @@ def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
 
 def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
     if df.empty:
-        return make_empty_chart("Horsepower vs Price", "No data for this filter")
+        return make_empty_chart("Horsepower vs Price Regression", "No data for this filter")
 
-    if len(df) == 1:
-        single = df.iloc[[0]].copy()
-        single["Label"] = single["Model"] + " (" + single["Fuel Type"] + ")"
-        point = (
-            alt.Chart(single)
-            .mark_circle(size=220, color="#4c78a8", opacity=0.85)
-            .encode(
-                x=alt.X("Horsepower:Q", title="Horsepower"),
-                y=alt.Y("Base Price (USD):Q", title="Base Price (USD)"),
-                tooltip=[
-                    "Model:N",
-                    "Fuel Type:N",
-                    "Base Price (USD):Q",
-                    "Horsepower:Q",
-                    "Turbo:N",
-                ],
-            )
-        )
-        label = (
-            alt.Chart(single)
-            .mark_text(align="left", dx=8, dy=-8, fontSize=12)
-            .encode(
-                x="Horsepower:Q",
-                y="Base Price (USD):Q",
-                text="Label:N",
-            )
-        )
-        return (point + label).properties(
-            width="container", height=CHART_HEIGHT, title="Horsepower vs Price"
+    if len(df) < 2:
+        return make_empty_chart(
+            "Horsepower vs Price Regression",
+            "Not enough records for regression",
         )
 
-    sample = df.sample(min(3000, len(df)), random_state=42)
+    color_scale = alt.Scale(domain=fuel_options)
 
-    return (
-        alt.Chart(sample)
-        .mark_circle(size=40, opacity=0.45)
+    lines = (
+        alt.Chart(df)
+        .transform_loess(
+            "Horsepower",
+            "Base Price (USD)",
+            groupby=["Fuel Type"],
+            bandwidth=0.6,
+        )
+        .mark_line(size=3.5)
         .encode(
             x=alt.X("Horsepower:Q", title="Horsepower"),
             y=alt.Y("Base Price (USD):Q", title="Base Price (USD)"),
-            color=alt.Color("Fuel Type:N", title="Fuel Type"),
-            tooltip=[
-                "Model:N",
-                "Fuel Type:N",
-                "Base Price (USD):Q",
-                "Horsepower:Q",
-                "Turbo:N",
-            ],
+            color=alt.Color("Fuel Type:N", title="Fuel Type", scale=color_scale),
+            tooltip=["Fuel Type:N"],
         )
-        .properties(width="container", height=CHART_HEIGHT, title="Horsepower vs Price")
+    )
+
+    return lines.properties(
+        width="container", height=CHART_HEIGHT, title="Horsepower vs Price Regression"
     )
 
 
@@ -314,6 +292,10 @@ app.layout = html.Div(
                                     "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
                                     style={"margin": "0", "fontSize": "24px", "lineHeight": "1.1"},
                                 ),
+                                html.P(
+                                    "Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors.",
+                                    style={"margin": "2px 0 0 0", "fontSize": "12px", "color": "#555"},
+                                ),
                             ],
                             style={"display": "flex", "flexDirection": "column", "gap": "2px"},
                         ),
@@ -439,6 +421,14 @@ def update_dashboard(
         price_range=price_range,
         horsepower_range=horsepower_range,
     )
+    filtered_for_regression = filter_data(
+        year_range=year_range,
+        models=models,
+        fuel_types=[],
+        turbo_types=turbo_types,
+        price_range=price_range,
+        horsepower_range=horsepower_range,
+    )
 
     price_label = f"PRICE RANGE (USD): {price_range[0]:,} - {price_range[1]:,}"
     hp_label = f"HORSEPOWER RANGE: {horsepower_range[0]} - {horsepower_range[1]}"
@@ -464,7 +454,7 @@ def update_dashboard(
         metric_hp,
         chart_to_html(build_fuel_trend_chart(filtered)),
         chart_to_html(build_model_rank_chart(filtered)),
-        chart_to_html(build_price_hp_chart(filtered)),
+        chart_to_html(build_price_hp_chart(filtered_for_regression)),
         chart_to_html(build_color_chart(filtered)),
     )
 
