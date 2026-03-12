@@ -43,7 +43,7 @@ turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
 app = Dash(__name__)
 server = app.server
-CHART_HEIGHT = 180
+CHART_HEIGHT = 150
 
 
 def chart_to_html(chart: alt.Chart) -> str:
@@ -236,10 +236,6 @@ def filter_data(
 
 app.layout = html.Div(
     [
-        html.H1(
-            "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
-            style={"margin": "0", "fontSize": "38px", "lineHeight": "1.1"},
-        ),
         html.Div(
             [
                 html.Div(
@@ -318,7 +314,7 @@ app.layout = html.Div(
                         ),
                     ],
                     style={
-                        "width": "300px",
+                        "width": "280px",
                         "display": "flex",
                         "flexDirection": "column",
                         "gap": "4px",
@@ -330,31 +326,57 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.P(
-                            id="status-line",
-                            style={"margin": "0", "fontWeight": "bold", "fontSize": "14px"},
+                        html.Div(
+                            [
+                                html.H1(
+                                    "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
+                                    style={"margin": "0", "fontSize": "24px", "lineHeight": "1.1"},
+                                ),
+                                html.P(
+                                    "Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors.",
+                                    style={"margin": "2px 0 0 0", "fontSize": "12px", "color": "#555"},
+                                ),
+                            ],
+                            style={"display": "flex", "flexDirection": "column", "gap": "2px"},
+                        ),
+                        html.Div(
+                            [
+                                html.Div(
+                                    [html.Div("TOTAL RECORDS", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-total", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                ),
+                                html.Div(
+                                    [html.Div("MODEL COUNT", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-models", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                ),
+                                html.Div(
+                                    [html.Div("AVG PRICE (USD)", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-price", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                ),
+                                html.Div(
+                                    [html.Div("AVG HORSEPOWER", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-hp", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                ),
+                            ],
+                            style={"display": "grid", "gridTemplateColumns": "repeat(4, minmax(0, 1fr))", "gap": "8px"},
                         ),
                         html.Div(
                             [
                                 html.Iframe(
                                     id="chart-fuel",
                                     style={"width": "100%", "height": "100%", "border": "0"},
-                                    scrolling="no",
                                 ),
                                 html.Iframe(
                                     id="chart-model",
                                     style={"width": "100%", "height": "100%", "border": "0"},
-                                    scrolling="no",
                                 ),
                                 html.Iframe(
                                     id="chart-price-hp",
                                     style={"width": "100%", "height": "100%", "border": "0"},
-                                    scrolling="no",
                                 ),
                                 html.Iframe(
                                     id="chart-color",
                                     style={"width": "100%", "height": "100%", "border": "0"},
-                                    scrolling="no",
                                 ),
                             ],
                             style={
@@ -362,19 +384,18 @@ app.layout = html.Div(
                                 "gridTemplateColumns": "repeat(2, minmax(0, 1fr))",
                                 "gridTemplateRows": "repeat(2, minmax(0, 1fr))",
                                 "gap": "6px",
-                                "height": "calc(100vh - 86px)",
+                                "height": "calc(100vh - 170px)",
                                 "minHeight": "0",
                             },
                         ),
                     ],
-                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "4px"},
+                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "8px"},
                 ),
             ],
             style={
                 "display": "flex",
                 "gap": "8px",
-                "marginTop": "8px",
-                "height": "calc(100vh - 52px)",
+                "height": "calc(100vh - 20px)",
             },
         ),
     ],
@@ -382,7 +403,7 @@ app.layout = html.Div(
         "width": "100%",
         "maxWidth": "1800px",
         "margin": "0 auto",
-        "padding": "6px 8px",
+        "padding": "8px",
         "boxSizing": "border-box",
         "overflow": "hidden",
         "height": "calc(100vh - 16px)",
@@ -399,7 +420,10 @@ app.layout = html.Div(
     Output("hp-range", "value"),
     Output("price-range-label", "children"),
     Output("hp-range-label", "children"),
-    Output("status-line", "children"),
+    Output("metric-total", "children"),
+    Output("metric-models", "children"),
+    Output("metric-price", "children"),
+    Output("metric-hp", "children"),
     Output("chart-fuel", "srcDoc"),
     Output("chart-model", "srcDoc"),
     Output("chart-price-hp", "srcDoc"),
@@ -438,12 +462,14 @@ def update_dashboard(
         horsepower_range=horsepower_range,
     )
 
-    status = (
-        f"Vehicles matching current filters: {len(filtered):,} "
-        f"| Models: {filtered['Model'].nunique():,}"
-    )
     price_label = f"PRICE RANGE (USD): {price_range[0]:,} - {price_range[1]:,}"
     hp_label = f"HORSEPOWER RANGE: {horsepower_range[0]} - {horsepower_range[1]}"
+    metric_total = f"{len(filtered):,}"
+    metric_models = f"{filtered['Model'].nunique():,}"
+    metric_price = (
+        f"{int(filtered['Base Price (USD)'].mean()):,}" if not filtered.empty else "0"
+    )
+    metric_hp = f"{int(filtered['Horsepower'].mean()):,}" if not filtered.empty else "0"
 
     return (
         year_range,
@@ -454,7 +480,10 @@ def update_dashboard(
         horsepower_range,
         price_label,
         hp_label,
-        status,
+        metric_total,
+        metric_models,
+        metric_price,
+        metric_hp,
         chart_to_html(build_fuel_trend_chart(filtered)),
         chart_to_html(build_model_rank_chart(filtered)),
         chart_to_html(build_price_hp_chart(filtered)),
