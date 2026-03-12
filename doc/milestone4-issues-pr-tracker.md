@@ -17,3 +17,4 @@ Use this file to keep auditable links for course checking.
 
 If development was done directly on `main`, create retrospective issues and reference relevant commits in each issue body so TAs can still trace decisions and implementation history.
 Update note: Milestone 4 evidence links are being added through Issues and PRs.
+Update note 2: This branch records milestone-4 issue and PR traceability for grading.
