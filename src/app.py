@@ -160,7 +160,7 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
     color_scale = alt.Scale(
         domain=[
             "Black",
-            "White",
+            "Pink",
             "Silver",
             "Gray",
             "Grey",
@@ -174,7 +174,8 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
         ],
         range=[
             "black",
-            "white",
+            "pink
+            ",
             "silver",
             "gray",
             "gray",
