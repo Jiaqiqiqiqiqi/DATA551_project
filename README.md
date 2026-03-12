@@ -95,3 +95,11 @@ If you want to help, open a pull request to `main`.
 - Team contract: `team-contract.md`
 - Milestone submission link: `canvas-submission.md`
 
+## Milestone 4 Highlights
+- Final full-screen layout with a dedicated filter panel and KPI cards
+- Improved label readability for range filters
+- Refined chart titles and spacing for clearer interpretation
+- Feedback-driven redesign of the horsepower-price panel to grouped regression trends
+- Final reflection and feedback resolution documentation in `doc/`
+- Milestone 4 release and submission materials are prepared
+
