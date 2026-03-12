@@ -235,13 +235,18 @@ app.layout = html.Div(
                     [
                         html.Label("Horsepower Range"),
                         dcc.RangeSlider(
-                            id="hp-range",
-                            min=hp_min,
-                            max=hp_max,
-                            value=[hp_min, hp_max],
-                            step=5,
+                            id="price-range",
+                            min=price_min,
+                            max=price_max,
+                            value=[price_min, price_max],
+                            step=500,
+                            marks={
+                                price_min: f"{price_min:,}",
+                                (price_min + price_max)//2: f"{(price_min + price_max)//2:,}",
+                                price_max: f"{price_max:,}"
+                            },
                             tooltip={"placement": "bottom", "always_visible": False},
-                        ),
+                        )
                     ],
                     style={"width": "49%"},
                 ),
