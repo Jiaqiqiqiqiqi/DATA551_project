@@ -174,7 +174,7 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
         ],
         range=[
             "black",
-            "#FFB6C1",  # White 用粉色显示，增强可见性
+            "#FFB6C1", 
             "silver",
             "gray",
             "gray",
