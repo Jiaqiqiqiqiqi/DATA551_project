@@ -110,7 +110,7 @@ def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
         .encode(
             x=alt.X("Sales Volume:Q", title="Sales Volume"),
             y=alt.Y("Model:N", sort="-x", title="Model"),
-            color=alt.value("#4c78a8"),
+            color=alt.Color("Model:N", legend=None),
             tooltip=["Model:N", "Sales Volume:Q"],
         )
         .properties(width="container", height=CHART_HEIGHT, title=chart_title)
@@ -184,24 +184,6 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
     )
 
     chart_title = "Selected Color Sales" if grouped["Color"].nunique() == 1 else "Top Colors"
-    color_map = {
-        "black": "black",
-        "white": "white",
-        "silver": "silver",
-        "gray": "gray",
-        "grey": "gray",
-        "blue": "steelblue",
-        "red": "firebrick",
-        "green": "forestgreen",
-        "yellow": "gold",
-        "brown": "saddlebrown",
-        "beige": "#f5f5dc",
-        "orange": "orange",
-        "pink": "#ffb6c1",
-        "gold": "gold",
-        "purple": "purple",
-    }
-    grouped["Color Value"] = grouped["Color"].str.strip().str.lower().map(color_map).fillna("#4c78a8")
 
     return (
         alt.Chart(grouped)
@@ -209,7 +191,7 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
         .encode(
             x=alt.X("Sales Volume:Q", title="Sales Volume"),
             y=alt.Y("Color:N", sort="-x", title="Color"),
-            color=alt.Color("Color Value:N", scale=None, legend=None),
+            color=alt.value("#4c78a8"),
             tooltip=["Color:N", "Sales Volume:Q"],
         )
         .properties(width="container", height=CHART_HEIGHT, title=chart_title)
