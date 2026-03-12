@@ -1,0 +1,13 @@
+# Reflection for Milestone 4
+
+For Milestone 4, our main goal was to turn the prototype into a production-ready dashboard that is usable in full-screen grading mode and practical for our target audience (regional dealership managers). We prioritized improving layout clarity, reducing friction in filtering, and making each chart easier to interpret at a glance.
+
+The most important implementation change was a full layout restructure. We moved all controls to a dedicated left panel and consolidated the analytical content on the right with KPI cards and a 2x2 chart grid. This improved scannability and reduced unnecessary page movement. We also improved label visibility by adding dynamic text for selected price and horsepower ranges, which addressed ambiguity from the previous milestone. We standardized key UI wording and chart naming for consistency, including keeping the horsepower-price panel title concise and aligned with the axis direction.
+
+We also updated chart design based on TA and peer testing feedback. The fuel trend chart has improved year-axis spacing. The top models chart now uses distinct colors for category differentiation, while the top colors chart was simplified to one consistent color for readability. The horsepower-price panel was redesigned from a noisy scatter-heavy view into grouped LOESS regression lines by fuel type. This better communicates trend shape for each fuel type and is easier to read during decision-oriented discussions.
+
+To keep performance acceptable, we retained pragmatic safeguards for large data and edge cases. For example, the regression panel samples rows before LOESS fitting to avoid rendering failures and maintains fallback behavior when too few records are available. This trade-off slightly reduces fidelity for extreme subsets but improves stability and user experience.
+
+What is still not fully implemented is direct chart-to-chart click cross-filtering across all panels. We intentionally deferred this because our final iteration revealed that layout, legibility, and deployment reliability had higher immediate impact on grading criteria and real usage. We chose to keep global filter controls as the single source of interaction instead of introducing last-minute multi-panel state complexity.
+
+The most valuable feedback theme across TA and peers was consistency: consistent labels, consistent visual hierarchy, and consistent behavior in constrained screen space. This changed how we prioritized final work. Instead of adding more features, we focused on making core interactions robust and understandable. That decision improved both usability and confidence in the final deployed app.
