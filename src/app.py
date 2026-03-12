@@ -119,11 +119,11 @@ def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
 
 def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
     if df.empty:
-        return make_empty_chart("Horsepower vs Price Regression", "No data for this filter")
+        return make_empty_chart("Horsepower vs Price", "No data for this filter")
 
     if len(df) < 2:
         return make_empty_chart(
-            "Horsepower vs Price Regression",
+            "Horsepower vs Price",
             "Not enough records for regression",
         )
 
