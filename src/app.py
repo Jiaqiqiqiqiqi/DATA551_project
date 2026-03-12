@@ -41,7 +41,7 @@ model_options = sorted(df_all["Model"].dropna().unique().tolist())
 fuel_options = sorted(df_all["Fuel Type"].dropna().unique().tolist())
 turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
-app = Dash(__name__)
+app = Dash(__name__, title="Mercedes-Benz Sales Insights Dashboard")
 server = app.server
 CHART_HEIGHT = 150
 
@@ -457,4 +457,4 @@ def update_dashboard(
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
