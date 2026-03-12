@@ -27,7 +27,7 @@ They need simple evidence for inventory and display decisions.
 Main panels in the app:
 - Fuel type sales trend
 - Top models by sales
-- Price vs horsepower
+- Horsepower vs Price
 - Top colors
 
 ## Sketch
