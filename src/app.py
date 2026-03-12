@@ -43,10 +43,11 @@ turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
 app = Dash(__name__)
 server = app.server
+CHART_HEIGHT = 240
 
 
 def chart_to_html(chart: alt.Chart) -> str:
-    return chart.to_html(embed_options={"actions": False})
+    return chart.to_html(embed_options={"actions": False, "renderer": "svg"})
 
 
 def make_empty_chart(title: str, message: str) -> alt.Chart:
@@ -55,7 +56,7 @@ def make_empty_chart(title: str, message: str) -> alt.Chart:
         alt.Chart(source)
         .mark_text(size=18)
         .encode(text="text:N")
-        .properties(width="container", height=320, title=title)
+        .properties(width="container", height=CHART_HEIGHT, title=title)
     )
 
 
@@ -69,20 +70,22 @@ def build_fuel_trend_chart(df: pd.DataFrame) -> alt.Chart:
         .sort_values("Year")
     )
 
+    year_ticks = max(2, min(6, grouped["Year"].nunique()))
+
     return (
         alt.Chart(grouped)
         .mark_line(point=True)
         .encode(
             x=alt.X(
-                "Year:O",
+                "Year:Q",
                 title="Year",
-                axis=alt.Axis(labelAngle=0, labelOverlap="greedy"),
+                axis=alt.Axis(format="d", tickCount=year_ticks, labelAngle=0),
             ),
             y=alt.Y("Sales Volume:Q", title="Sales Volume"),
             color=alt.Color("Fuel Type:N", title="Fuel Type"),
-            tooltip=["Year:O", "Fuel Type:N", "Sales Volume:Q"],
+            tooltip=["Year:Q", "Fuel Type:N", "Sales Volume:Q"],
         )
-        .properties(width="container", height=320, title="Fuel Type Sales Trend")
+        .properties(width="container", height=CHART_HEIGHT, title="Fuel Type Sales Trend")
     )
 
 
@@ -110,7 +113,7 @@ def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
             color=alt.value("#4c78a8"),
             tooltip=["Model:N", "Sales Volume:Q"],
         )
-        .properties(width="container", height=320, title=chart_title)
+        .properties(width="container", height=CHART_HEIGHT, title=chart_title)
     )
 
 
@@ -119,9 +122,34 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
         return make_empty_chart("Horsepower vs Price", "No data for this filter")
 
     if len(df) == 1:
-        return make_empty_chart(
-            "Horsepower vs Price",
-            "Only 1 vehicle record matches the current filters",
+        single = df.iloc[[0]].copy()
+        single["Label"] = single["Model"] + " (" + single["Fuel Type"] + ")"
+        point = (
+            alt.Chart(single)
+            .mark_circle(size=220, color="#4c78a8", opacity=0.85)
+            .encode(
+                x=alt.X("Horsepower:Q", title="Horsepower"),
+                y=alt.Y("Base Price (USD):Q", title="Base Price (USD)"),
+                tooltip=[
+                    "Model:N",
+                    "Fuel Type:N",
+                    "Base Price (USD):Q",
+                    "Horsepower:Q",
+                    "Turbo:N",
+                ],
+            )
+        )
+        label = (
+            alt.Chart(single)
+            .mark_text(align="left", dx=8, dy=-8, fontSize=12)
+            .encode(
+                x="Horsepower:Q",
+                y="Base Price (USD):Q",
+                text="Label:N",
+            )
+        )
+        return (point + label).properties(
+            width="container", height=CHART_HEIGHT, title="Horsepower vs Price"
         )
 
     sample = df.sample(min(3000, len(df)), random_state=42)
@@ -141,7 +169,7 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
                 "Turbo:N",
             ],
         )
-        .properties(width="container", height=320, title="Horsepower vs Price")
+        .properties(width="container", height=CHART_HEIGHT, title="Horsepower vs Price")
     )
 
 
@@ -156,37 +184,24 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
     )
 
     chart_title = "Selected Color Sales" if grouped["Color"].nunique() == 1 else "Top Colors"
-
-    color_scale = alt.Scale(
-        domain=[
-            "Black",
-            "Pink",
-            "Silver",
-            "Gray",
-            "Grey",
-            "Blue",
-            "Red",
-            "Green",
-            "Yellow",
-            "Brown",
-            "Beige",
-            "Orange",
-        ],
-        range=[
-            "black",
-            "#FFB6C1", 
-            "silver",
-            "gray",
-            "gray",
-            "steelblue",
-            "firebrick",
-            "forestgreen",
-            "gold",
-            "saddlebrown",
-            "beige",
-            "orange",
-        ],
-    )
+    color_map = {
+        "black": "black",
+        "white": "white",
+        "silver": "silver",
+        "gray": "gray",
+        "grey": "gray",
+        "blue": "steelblue",
+        "red": "firebrick",
+        "green": "forestgreen",
+        "yellow": "gold",
+        "brown": "saddlebrown",
+        "beige": "#f5f5dc",
+        "orange": "orange",
+        "pink": "#ffb6c1",
+        "gold": "gold",
+        "purple": "purple",
+    }
+    grouped["Color Value"] = grouped["Color"].str.strip().str.lower().map(color_map).fillna("#4c78a8")
 
     return (
         alt.Chart(grouped)
@@ -194,10 +209,10 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
         .encode(
             x=alt.X("Sales Volume:Q", title="Sales Volume"),
             y=alt.Y("Color:N", sort="-x", title="Color"),
-            color=alt.Color("Color:N", scale=color_scale, legend=None),
+            color=alt.Color("Color Value:N", scale=None, legend=None),
             tooltip=["Color:N", "Sales Volume:Q"],
         )
-        .properties(width="container", height=320, title=chart_title)
+        .properties(width="container", height=CHART_HEIGHT, title=chart_title)
     )
 
 
@@ -221,73 +236,53 @@ def filter_data(
 
 app.layout = html.Div(
     [
-        html.H1("Mercedes-Benz Sales Insights Dashboard"),
+        html.H1("MERCEDES-BENZ SALES INSIGHTS DASHBOARD", style={"margin": "0"}),
         html.P(
-            "Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors."
-        ),
-        html.Div(
-            [
-                html.Label("Year Range"),
-                dcc.RangeSlider(
-                    id="year-range",
-                    min=year_min,
-                    max=year_max,
-                    value=[year_min, year_max],
-                    step=1,
-                    marks={y: str(y) for y in range(year_min, year_max + 1)},
-                ),
-            ],
-            style={"marginBottom": "20px"},
+            "Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors.",
+            style={"margin": "6px 0 0 0"},
         ),
         html.Div(
             [
                 html.Div(
                     [
-                        html.Label("Model"),
+                        html.Label("YEAR RANGE"),
+                        dcc.RangeSlider(
+                            id="year-range",
+                            min=year_min,
+                            max=year_max,
+                            value=[year_min, year_max],
+                            step=1,
+                            marks={y: str(y) for y in range(year_min, year_max + 1)},
+                        ),
+                        html.Div(style={"height": "8px"}),
+                        html.Label("MODEL"),
                         dcc.Dropdown(
                             id="model-filter",
                             options=[{"label": m, "value": m} for m in model_options],
                             value=[],
                             multi=True,
-                            placeholder="All models",
+                            placeholder="ALL MODELS",
                         ),
-                    ],
-                    style={"width": "32%"},
-                ),
-                html.Div(
-                    [
-                        html.Label("Fuel Type"),
+                        html.Div(style={"height": "8px"}),
+                        html.Label("FUEL TYPE"),
                         dcc.Dropdown(
                             id="fuel-filter",
                             options=[{"label": f, "value": f} for f in fuel_options],
                             value=[],
                             multi=True,
-                            placeholder="All fuel types",
+                            placeholder="ALL FUEL TYPES",
                         ),
-                    ],
-                    style={"width": "32%"},
-                ),
-                html.Div(
-                    [
-                        html.Label("Turbo"),
+                        html.Div(style={"height": "8px"}),
+                        html.Label("TURBO"),
                         dcc.Dropdown(
                             id="turbo-filter",
                             options=[{"label": t, "value": t} for t in turbo_options],
                             value=[],
                             multi=True,
-                            placeholder="All turbo settings",
+                            placeholder="ALL TURBO SETTINGS",
                         ),
-                    ],
-                    style={"width": "32%"},
-                ),
-            ],
-            style={"display": "flex", "justifyContent": "space-between", "gap": "12px"},
-        ),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.Label("Price Range (USD)"),
+                        html.Div(style={"height": "8px"}),
+                        html.Label(id="price-range-label"),
                         dcc.RangeSlider(
                             id="price-range",
                             min=price_min,
@@ -295,18 +290,14 @@ app.layout = html.Div(
                             value=[price_min, price_max],
                             step=500,
                             marks={
-                                price_min: f"{price_min:,}",
-                                (price_min + price_max) // 2: f"{(price_min + price_max) // 2:,}",
-                                price_max: f"{price_max:,}",
+                                price_min: f"{price_min // 1000}K",
+                                (price_min + price_max) // 2: f"{((price_min + price_max) // 2) // 1000}K",
+                                price_max: f"{price_max // 1000}K",
                             },
                             tooltip={"placement": "bottom", "always_visible": False},
                         ),
-                    ],
-                    style={"width": "49%"},
-                ),
-                html.Div(
-                    [
-                        html.Label("Horsepower Range"),
+                        html.Div(style={"height": "8px"}),
+                        html.Label(id="hp-range-label"),
                         dcc.RangeSlider(
                             id="hp-range",
                             min=hp_min,
@@ -320,47 +311,83 @@ app.layout = html.Div(
                             },
                             tooltip={"placement": "bottom", "always_visible": False},
                         ),
+                        html.Button(
+                            "RESET ALL FILTERS",
+                            id="reset-btn",
+                            n_clicks=0,
+                            style={"marginTop": "8px"},
+                        ),
                     ],
-                    style={"width": "49%"},
+                    style={
+                        "width": "340px",
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "gap": "6px",
+                        "padding": "14px",
+                        "border": "1px solid #e5e7eb",
+                        "borderRadius": "10px",
+                        "backgroundColor": "white",
+                    },
                 ),
-            ],
-            style={"display": "flex", "justifyContent": "space-between", "marginTop": "16px"},
-        ),
-        html.Button(
-            "Reset All Filters",
-            id="reset-btn",
-            n_clicks=0,
-            style={"marginTop": "18px"},
-        ),
-        html.P(id="status-line", style={"marginTop": "10px", "fontWeight": "bold"}),
-        html.Div(
-            [
-                html.Iframe(
-                    id="chart-fuel",
-                    style={"width": "100%", "height": "460px", "border": "0", "overflow": "hidden"},
-                ),
-                html.Iframe(
-                    id="chart-model",
-                    style={"width": "100%", "height": "460px", "border": "0", "overflow": "hidden"},
-                ),
-                html.Iframe(
-                    id="chart-price-hp",
-                    style={"width": "100%", "height": "440px", "border": "0", "overflow": "hidden"},
-                ),
-                html.Iframe(
-                    id="chart-color",
-                    style={"width": "100%", "height": "460px", "border": "0", "overflow": "hidden"},
+                html.Div(
+                    [
+                        html.P(
+                            id="status-line",
+                            style={"margin": "0", "fontWeight": "bold", "fontSize": "15px"},
+                        ),
+                        html.Div(
+                            [
+                                html.Iframe(
+                                    id="chart-fuel",
+                                    style={"width": "100%", "height": "100%", "border": "0"},
+                                    scrolling="no",
+                                ),
+                                html.Iframe(
+                                    id="chart-model",
+                                    style={"width": "100%", "height": "100%", "border": "0"},
+                                    scrolling="no",
+                                ),
+                                html.Iframe(
+                                    id="chart-price-hp",
+                                    style={"width": "100%", "height": "100%", "border": "0"},
+                                    scrolling="no",
+                                ),
+                                html.Iframe(
+                                    id="chart-color",
+                                    style={"width": "100%", "height": "100%", "border": "0"},
+                                    scrolling="no",
+                                ),
+                            ],
+                            style={
+                                "display": "grid",
+                                "gridTemplateColumns": "repeat(2, minmax(0, 1fr))",
+                                "gridTemplateRows": "repeat(2, minmax(0, 1fr))",
+                                "gap": "10px",
+                                "height": "calc(100vh - 130px)",
+                                "minHeight": "0",
+                            },
+                        ),
+                    ],
+                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "8px"},
                 ),
             ],
             style={
-                "display": "grid",
-                "gridTemplateColumns": "repeat(auto-fit, minmax(600px, 1fr))",
-                "gap": "16px",
-                "marginTop": "20px",
+                "display": "flex",
+                "gap": "12px",
+                "marginTop": "12px",
+                "height": "calc(100vh - 90px)",
             },
         ),
     ],
-    style={"width": "100%", "maxWidth": "1800px", "margin": "0 auto", "padding": "24px 32px"},
+    style={
+        "width": "100%",
+        "maxWidth": "1800px",
+        "margin": "0 auto",
+        "padding": "12px 14px",
+        "boxSizing": "border-box",
+        "overflow": "hidden",
+        "height": "100vh",
+    },
 )
 
 
@@ -371,6 +398,8 @@ app.layout = html.Div(
     Output("turbo-filter", "value"),
     Output("price-range", "value"),
     Output("hp-range", "value"),
+    Output("price-range-label", "children"),
+    Output("hp-range-label", "children"),
     Output("status-line", "children"),
     Output("chart-fuel", "srcDoc"),
     Output("chart-model", "srcDoc"),
@@ -414,6 +443,8 @@ def update_dashboard(
         f"Vehicles matching current filters: {len(filtered):,} "
         f"| Models: {filtered['Model'].nunique():,}"
     )
+    price_label = f"PRICE RANGE (USD): {price_range[0]:,} - {price_range[1]:,}"
+    hp_label = f"HORSEPOWER RANGE: {horsepower_range[0]} - {horsepower_range[1]}"
 
     return (
         year_range,
@@ -422,6 +453,8 @@ def update_dashboard(
         turbo_types,
         price_range,
         horsepower_range,
+        price_label,
+        hp_label,
         status,
         chart_to_html(build_fuel_trend_chart(filtered)),
         chart_to_html(build_model_rank_chart(filtered)),
