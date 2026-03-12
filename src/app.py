@@ -148,7 +148,7 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
     )
 
     return lines.properties(
-        width="container", height=CHART_HEIGHT, title="Horsepower vs Price Regression"
+        width="container", height=CHART_HEIGHT, title="Horsepower vs Price"
     )
 
 
@@ -292,10 +292,6 @@ app.layout = html.Div(
                                 html.H1(
                                     "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
                                     style={"margin": "0", "fontSize": "24px", "lineHeight": "1.1"},
-                                ),
-                                html.P(
-                                    "Interactive app for exploring trends in models, fuel types, pricing, horsepower, and colors.",
-                                    style={"margin": "2px 0 0 0", "fontSize": "12px", "color": "#555"},
                                 ),
                             ],
                             style={"display": "flex", "flexDirection": "column", "gap": "2px"},
