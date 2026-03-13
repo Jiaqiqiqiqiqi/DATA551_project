@@ -6,6 +6,17 @@ from dash import Dash, Input, Output, callback_context, dcc, html
 
 
 def find_data_file() -> Path:
+    """Return the first available CSV data file path.
+
+    The function checks a small list of expected file locations in order and
+    returns the first path that exists on disk.
+
+    Returns:
+        Path: The resolved path to the dataset file.
+
+    Raises:
+        FileNotFoundError: If none of the expected data files exist.
+    """
     candidates = [
         Path("data/raw/mb_sales_sample_stratified.csv"),
         Path("data/raw/mercedes_benz_sales_2020_2025.csv"),
@@ -18,6 +29,15 @@ def find_data_file() -> Path:
 
 
 def load_data() -> pd.DataFrame:
+    """Load and clean the dashboard dataset.
+
+    The function reads the CSV file returned by `find_data_file()`, converts
+    key numeric columns to numeric types, fills missing sales values with zero,
+    and removes rows missing required fields for filtering and visualization.
+
+    Returns:
+        pd.DataFrame: A cleaned dataframe ready for dashboard use.
+    """
     df = pd.read_csv(find_data_file())
     df["Year"] = pd.to_numeric(df["Year"], errors="coerce")
     df["Base Price (USD)"] = pd.to_numeric(df["Base Price (USD)"], errors="coerce")
@@ -47,10 +67,27 @@ CHART_HEIGHT = 320
 
 
 def chart_to_html(chart: alt.Chart) -> str:
+    """Convert an Altair chart into embeddable HTML.
+
+    Args:
+        chart (alt.Chart): The Altair chart object to serialize.
+
+    Returns:
+        str: HTML markup used as the iframe `srcDoc` content.
+    """
     return chart.to_html(embed_options={"actions": False, "renderer": "svg"})
 
 
 def make_empty_chart(title: str, message: str) -> alt.Chart:
+    """Build a placeholder chart shown when filtered data is unavailable.
+
+    Args:
+        title (str): The chart title displayed above the placeholder.
+        message (str): The message rendered in the center of the chart area.
+
+    Returns:
+        alt.Chart: A simple text-based Altair chart placeholder.
+    """
     source = pd.DataFrame({"text": [message]})
     return (
         alt.Chart(source)
@@ -61,6 +98,15 @@ def make_empty_chart(title: str, message: str) -> alt.Chart:
 
 
 def build_fuel_trend_chart(df: pd.DataFrame) -> alt.Chart:
+    """Create the fuel-type sales trend line chart.
+
+    Args:
+        df (pd.DataFrame): Filtered dataset used to aggregate yearly sales by
+            fuel type.
+
+    Returns:
+        alt.Chart: A line chart showing sales volume trends across years.
+    """
     if df.empty:
         return make_empty_chart("Fuel Type Sales Trend", "No data for this filter")
 
@@ -70,6 +116,7 @@ def build_fuel_trend_chart(df: pd.DataFrame) -> alt.Chart:
         .sort_values("Year")
     )
 
+    # Keep yearly tick labels readable without overcrowding the compact layout.
     year_ticks = max(2, min(6, grouped["Year"].nunique()))
 
     return (
@@ -90,6 +137,15 @@ def build_fuel_trend_chart(df: pd.DataFrame) -> alt.Chart:
 
 
 def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
+    """Create the model ranking bar chart.
+
+    Args:
+        df (pd.DataFrame): Filtered dataset used to summarize sales volume by
+            vehicle model.
+
+    Returns:
+        alt.Chart: A horizontal bar chart for the selected model or top models.
+    """
     if df.empty:
         return make_empty_chart("Top Models by Sales", "No data for this filter")
 
@@ -123,6 +179,15 @@ def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
 
 
 def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
+    """Create the horsepower-versus-price regression chart.
+
+    Args:
+        df (pd.DataFrame): Filtered dataset used to fit LOESS trend lines by
+            fuel type.
+
+    Returns:
+        alt.Chart: A multi-line regression chart relating horsepower to price.
+    """
     if df.empty:
         return make_empty_chart("Horsepower vs Price", "No data for this filter")
 
@@ -133,6 +198,7 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
         )
 
     color_scale = alt.Scale(domain=fuel_options)
+    # Sample the dataset so the regression stays within Altair row limits.
     regression_df = df.sample(min(4500, len(df)), random_state=42)
 
     lines = (
@@ -162,6 +228,15 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
 
 
 def build_color_chart(df: pd.DataFrame) -> alt.Chart:
+    """Create the top-colors bar chart.
+
+    Args:
+        df (pd.DataFrame): Filtered dataset used to aggregate sales volume by
+            vehicle color.
+
+    Returns:
+        alt.Chart: A horizontal bar chart showing the highest-selling colors.
+    """
     if df.empty:
         return make_empty_chart("Top Colors", "No data for this filter")
 
@@ -194,6 +269,19 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
 def filter_data(
     year_range, models, fuel_types, turbo_types, price_range, horsepower_range
 ) -> pd.DataFrame:
+    """Filter the full dataset using the current dashboard selections.
+
+    Args:
+        year_range: Two-value range specifying the minimum and maximum year.
+        models: Selected model names. An empty list means no model filtering.
+        fuel_types: Selected fuel types. An empty list means no fuel filtering.
+        turbo_types: Selected turbo values. An empty list means no turbo filtering.
+        price_range: Two-value range for base price in USD.
+        horsepower_range: Two-value range for horsepower.
+
+    Returns:
+        pd.DataFrame: The subset of `df_all` matching all active filters.
+    """
     df = df_all.copy()
     df = df[df["Year"].between(year_range[0], year_range[1])]
     df = df[df["Base Price (USD)"].between(price_range[0], price_range[1])]
@@ -422,6 +510,21 @@ app.layout = html.Div(
 def update_dashboard(
     year_range, models, fuel_types, turbo_types, price_range, horsepower_range, reset_clicks
 ):
+    """Update all dashboard controls, metrics, and charts.
+
+    Args:
+        year_range: Selected year range from the year slider.
+        models: Selected vehicle models from the model dropdown.
+        fuel_types: Selected fuel types from the fuel dropdown.
+        turbo_types: Selected turbo settings from the turbo dropdown.
+        price_range: Selected base price range from the price slider.
+        horsepower_range: Selected horsepower range from the horsepower slider.
+        reset_clicks: Number of times the reset button has been clicked.
+
+    Returns:
+        tuple: Updated control values, metric labels, and chart HTML strings for
+        all callback outputs.
+    """
     trigger = (
         callback_context.triggered[0]["prop_id"].split(".")[0]
         if callback_context.triggered
@@ -444,6 +547,8 @@ def update_dashboard(
         price_range=price_range,
         horsepower_range=horsepower_range,
     )
+    # The regression chart intentionally keeps all fuel types visible so the
+    # trend comparison remains available even when the fuel filter is applied.
     filtered_for_regression = filter_data(
         year_range=year_range,
         models=models,
