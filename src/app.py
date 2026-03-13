@@ -43,7 +43,7 @@ turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
 app = Dash(__name__, title="Mercedes-Benz Sales Insights Dashboard")
 server = app.server
-CHART_HEIGHT = 250
+CHART_HEIGHT = 290
 
 
 def chart_to_html(chart: alt.Chart) -> str:
