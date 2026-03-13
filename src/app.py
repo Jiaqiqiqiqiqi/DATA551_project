@@ -43,7 +43,7 @@ turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
 app = Dash(__name__, title="Mercedes-Benz Sales Insights Dashboard")
 server = app.server
-CHART_HEIGHT = 260
+CHART_HEIGHT = 320
 
 
 def chart_to_html(chart: alt.Chart) -> str:
@@ -81,7 +81,7 @@ def build_fuel_trend_chart(df: pd.DataFrame) -> alt.Chart:
                 title="Year",
                 axis=alt.Axis(format="d", tickCount=year_ticks, labelAngle=0),
             ),
-            y=alt.Y("Sales Volume:Q", title="Sales Volume"),
+            y=alt.Y("Sales Volume:Q", title="Sales Volume", scale=alt.Scale(zero=False)),
             color=alt.Color("Fuel Type:N", title="Fuel Type"),
             tooltip=["Year:Q", "Fuel Type:N", "Sales Volume:Q"],
         )
@@ -106,10 +106,15 @@ def build_model_rank_chart(df: pd.DataFrame) -> alt.Chart:
 
     return (
         alt.Chart(grouped)
-        .mark_bar()
+        .mark_bar(size=22)
         .encode(
             x=alt.X("Sales Volume:Q", title="Sales Volume"),
-            y=alt.Y("Model:N", sort="-x", title="Model"),
+            y=alt.Y(
+                "Model:N",
+                sort="-x",
+                title="Model",
+                scale=alt.Scale(paddingInner=0.12, paddingOuter=0.05),
+            ),
             color=alt.Color("Model:N", legend=None),
             tooltip=["Model:N", "Sales Volume:Q"],
         )
@@ -141,7 +146,11 @@ def build_price_hp_chart(df: pd.DataFrame) -> alt.Chart:
         .mark_line(size=3.5)
         .encode(
             x=alt.X("Horsepower:Q", title="Horsepower"),
-            y=alt.Y("Base Price (USD):Q", title="Base Price (USD)"),
+            y=alt.Y(
+                "Base Price (USD):Q",
+                title="Base Price (USD)",
+                scale=alt.Scale(zero=False),
+            ),
             color=alt.Color("Fuel Type:N", title="Fuel Type", scale=color_scale),
             tooltip=["Fuel Type:N"],
         )
@@ -166,10 +175,15 @@ def build_color_chart(df: pd.DataFrame) -> alt.Chart:
 
     return (
         alt.Chart(grouped)
-        .mark_bar()
+        .mark_bar(size=22)
         .encode(
             x=alt.X("Sales Volume:Q", title="Sales Volume"),
-            y=alt.Y("Color:N", sort="-x", title="Color"),
+            y=alt.Y(
+                "Color:N",
+                sort="-x",
+                title="Color",
+                scale=alt.Scale(paddingInner=0.12, paddingOuter=0.05),
+            ),
             color=alt.value("#4c78a8"),
             tooltip=["Color:N", "Sales Volume:Q"],
         )
@@ -291,7 +305,7 @@ app.layout = html.Div(
                             [
                                 html.H1(
                                     "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
-                                    style={"margin": "0", "fontSize": "21px", "lineHeight": "1.05"},
+                                    style={"margin": "0", "fontSize": "20px", "lineHeight": "1.0"},
                                 ),
                             ],
                             style={"display": "flex", "flexDirection": "column", "gap": "2px"},
@@ -303,28 +317,28 @@ app.layout = html.Div(
                                         html.Div("TOTAL RECORDS", style={"fontSize": "11px", "color": "#666"}),
                                         html.Div(id="metric-total", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "3px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
                                     [
                                         html.Div("MODEL COUNT", style={"fontSize": "11px", "color": "#666"}),
                                         html.Div(id="metric-models", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "3px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
                                     [
                                         html.Div("AVG PRICE (USD)", style={"fontSize": "11px", "color": "#666"}),
                                         html.Div(id="metric-price", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "3px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
                                     [
                                         html.Div("AVG HORSEPOWER", style={"fontSize": "11px", "color": "#666"}),
                                         html.Div(id="metric-hp", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "3px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                             ],
                             style={"display": "grid", "gridTemplateColumns": "repeat(4, minmax(0, 1fr))", "gap": "8px"},
@@ -353,7 +367,7 @@ app.layout = html.Div(
                                 "gridTemplateColumns": "repeat(2, minmax(0, 1fr))",
                                 "gridTemplateRows": "repeat(2, minmax(0, 1fr))",
                                 "gap": "6px",
-                                "height": "calc(100vh - 84px)",
+                                "height": "calc(100vh - 54px)",
                                 "minHeight": "0",
                             },
                         ),
@@ -364,7 +378,7 @@ app.layout = html.Div(
             style={
                 "display": "flex",
                 "gap": "8px",
-                "height": "calc(100vh - 4px)",
+                "height": "100vh",
             },
         ),
     ],
