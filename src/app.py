@@ -299,19 +299,31 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    [html.Div("TOTAL RECORDS", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-total", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    [
+                                        html.Div("TOTAL RECORDS", style={"fontSize": "11px", "color": "#666"}),
+                                        html.Div(id="metric-total", style={"fontWeight": "700", "fontSize": "16px"}),
+                                    ],
                                     style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
-                                    [html.Div("MODEL COUNT", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-models", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    [
+                                        html.Div("MODEL COUNT", style={"fontSize": "11px", "color": "#666"}),
+                                        html.Div(id="metric-models", style={"fontWeight": "700", "fontSize": "16px"}),
+                                    ],
                                     style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
-                                    [html.Div("AVG PRICE (USD)", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-price", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    [
+                                        html.Div("AVG PRICE (USD)", style={"fontSize": "11px", "color": "#666"}),
+                                        html.Div(id="metric-price", style={"fontWeight": "700", "fontSize": "16px"}),
+                                    ],
                                     style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
-                                    [html.Div("AVG HORSEPOWER", style={"fontSize": "11px", "color": "#666"}), html.Div(id="metric-hp", style={"fontWeight": "700", "fontSize": "16px"})],
+                                    [
+                                        html.Div("AVG HORSEPOWER", style={"fontSize": "11px", "color": "#666"}),
+                                        html.Div(id="metric-hp", style={"fontWeight": "700", "fontSize": "16px"}),
+                                    ],
                                     style={"padding": "8px 10px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                             ],
