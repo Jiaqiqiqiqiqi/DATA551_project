@@ -43,7 +43,7 @@ turbo_options = sorted(df_all["Turbo"].dropna().unique().tolist())
 
 app = Dash(__name__, title="Mercedes-Benz Sales Insights Dashboard")
 server = app.server
-CHART_HEIGHT = 300
+CHART_HEIGHT = 260
 
 
 def chart_to_html(chart: alt.Chart) -> str:
@@ -291,7 +291,7 @@ app.layout = html.Div(
                             [
                                 html.H1(
                                     "MERCEDES-BENZ SALES INSIGHTS DASHBOARD",
-                                    style={"margin": "0", "fontSize": "24px", "lineHeight": "1.1"},
+                                    style={"margin": "0", "fontSize": "21px", "lineHeight": "1.05"},
                                 ),
                             ],
                             style={"display": "flex", "flexDirection": "column", "gap": "2px"},
@@ -301,30 +301,30 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Div("TOTAL RECORDS", style={"fontSize": "11px", "color": "#666"}),
-                                        html.Div(id="metric-total", style={"fontWeight": "700", "fontSize": "16px"}),
+                                        html.Div(id="metric-total", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "6px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
                                     [
                                         html.Div("MODEL COUNT", style={"fontSize": "11px", "color": "#666"}),
-                                        html.Div(id="metric-models", style={"fontWeight": "700", "fontSize": "16px"}),
+                                        html.Div(id="metric-models", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "6px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
                                     [
                                         html.Div("AVG PRICE (USD)", style={"fontSize": "11px", "color": "#666"}),
-                                        html.Div(id="metric-price", style={"fontWeight": "700", "fontSize": "16px"}),
+                                        html.Div(id="metric-price", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "6px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                                 html.Div(
                                     [
                                         html.Div("AVG HORSEPOWER", style={"fontSize": "11px", "color": "#666"}),
-                                        html.Div(id="metric-hp", style={"fontWeight": "700", "fontSize": "16px"}),
+                                        html.Div(id="metric-hp", style={"fontWeight": "700", "fontSize": "15px"}),
                                     ],
-                                    style={"padding": "6px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
+                                    style={"padding": "4px 8px", "border": "1px solid #e5e7eb", "borderRadius": "8px", "backgroundColor": "white"},
                                 ),
                             ],
                             style={"display": "grid", "gridTemplateColumns": "repeat(4, minmax(0, 1fr))", "gap": "8px"},
@@ -353,18 +353,18 @@ app.layout = html.Div(
                                 "gridTemplateColumns": "repeat(2, minmax(0, 1fr))",
                                 "gridTemplateRows": "repeat(2, minmax(0, 1fr))",
                                 "gap": "6px",
-                                "height": "calc(100vh - 120px)",
+                                "height": "calc(100vh - 84px)",
                                 "minHeight": "0",
                             },
                         ),
                     ],
-                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "4px"},
+                    style={"flex": "1", "display": "flex", "flexDirection": "column", "gap": "2px"},
                 ),
             ],
             style={
                 "display": "flex",
                 "gap": "8px",
-                "height": "calc(100vh - 12px)",
+                "height": "calc(100vh - 4px)",
             },
         ),
     ],
