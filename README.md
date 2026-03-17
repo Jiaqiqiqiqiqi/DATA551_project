@@ -1,115 +1,85 @@
-# Mercedes-Benz Sales Insights Dashboard (2020-2025)
+# Mercedes-Benz Sales Insights Dashboard
 
-Deployed app link: **https://data551-project.onrender.com/**
+## Project Overview
 
-This project is an interactive dashboard for Mercedes-Benz sales data from 2020 to 2025.
-This repository contains the Milestone 4 production-ready version.
+This project is an interactive data dashboard designed to analyze Mercedes-Benz vehicle data from 2020 to 2025. It helps users (e.g., dealership managers) understand sales trends, product performance, and key relationships such as price and horsepower.
 
-## Why this project
-We are a student data consulting team.
-Our main users are regional dealership managers.
-They need simple evidence for inventory and display decisions.
+The goal is to transform raw data into actionable insights through intuitive visualization and user-friendly interaction design.
 
-## What users can do
-- Check fuel type trend by year
-- Check top-selling models
-- Compare horsepower and price trends by fuel type using regression lines
-- Check top color choices
-- Filter data by year, model, fuel type, turbo, price, and horsepower
-- Use one reset button to clear all filters
+---
 
-## Interaction design / Dashboard layout
-- Global filters: Year range, Model, Fuel type, Turbo, Price range, and Horsepower range drive the dashboard state.
-- Regression panel behavior: the horsepower-price regression chart shows all fuel types for trend comparison while still respecting the other active filters.
-- Hover tooltips: hovering on marks reveals exact values and key attributes to support precise reading.
-- Reset: a single reset button clears all filters/selections to return to the default overview state.
+## My Contributions
 
-## Dashboard layout
-Main panels in the app:
-- Fuel type sales trend
-- Top models by sales
-- Horsepower vs Price (fuel-type regression)
-- Top colors
+In this team project, I contributed to both data analysis and dashboard development:
 
-## Milestone 4 Highlights
-- Final full-screen layout with a dedicated filter panel and KPI cards
-- Improved label readability for range filters
-- Refined chart titles and spacing for clearer interpretation
-- Feedback-driven redesign of the horsepower-price panel to grouped regression trends
-- Final reflection and feedback resolution documentation in `doc/`
+### 1. Dashboard Design & User Experience
 
-## Sketch
-This is our early layout sketch for dashboard design and interaction flow.
+- Designed a clear layout with a left-side control panel and right-side analytics panel  
+- Improved user flow from filtering → insight exploration → reset  
+- Added KPI summary cards for quick understanding of key metrics  
 
-![Dashboard sketch](./Sketch.png)
+### 2. Data Processing & Filtering
 
-## Local setup
-### 1) create environment (optional)
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
+- Cleaned and prepared raw vehicle data (price, horsepower, sales, etc.)  
+- Built a multi-dimensional filtering system (year, model, fuel type, turbo, price, horsepower)  
 
-### 2) install packages
-```bash
-pip install -r requirements.txt
-```
+### 3. Data Visualization
 
-### 3) run app
-```bash
-python src/app.py
-```
+Developed multiple interactive visualizations:
 
-The app will use this file by default:
-`data/raw/mb_sales_sample_stratified.csv`
+- Fuel type sales trends over time  
+- Top-selling vehicle models  
+- Horsepower vs price relationship (LOESS regression)  
+- Top vehicle colors  
 
-If you have the full raw dataset, you can rebuild samples with:
-```bash
-python src/build_samples.py
-```
+These charts help users quickly identify patterns and trends.
 
-Then open the local link in your browser.
+### 4. Interaction Design
 
-## Project structure
-```text
-DATA551_Project_G11_SUN_YAO_ZHAO/
-├── data/
-│   ├── raw/
-│   └── processed/
-├── src/
-├── reports/
-├── doc/
-├── requirements.txt
-├── Procfile
-└── README.md
-```
+- Implemented global filters affecting all charts  
+- Added reset button to improve usability  
+- Improved labeling clarity and chart readability  
+- Handled edge cases (e.g., empty datasets)  
 
-## Future Improvements
+### 5. Iteration Based on Feedback
 
-In future iterations, we plan to:
+- Improved dashboard based on TA and peer feedback  
+- Refined usability based on user survey results (SUS score: 71.4)  
+- Enhanced layout and visualization clarity  
 
-- Add robust chart-to-chart click cross-filtering across all panels
-- Expand KPI set (e.g., growth and segment share indicators)
-- Add optional dark theme and accessibility presets
-- Improve performance for larger datasets beyond current sampled workflows
+---
 
-## GitHub About (Milestone 4)
-Suggested About description:
-`Interactive Mercedes-Benz sales dashboard for dealership inventory insights (2020-2025).`
+## Tech Stack
 
-Suggested About URL:
-`https://data551-project.onrender.com/`
+- Python  
+- Dash  
+- Altair  
+- Pandas  
 
-Suggested keywords/topics:
-`dash`, `altair`, `interactive-dashboard`, `regression`, `filters`, `automotive-analytics`
+---
 
-## For contributors
-Please read `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` first.
-You can open an issue for bugs, ideas, or feature requests.
-If you want to help, open a pull request to `main`.
+## Key Features
 
-## Team files
-- Proposal: `proposal.md`
-- Team contract: `team-contract.md`
-- Milestone submission link: `canvas-submission.md`
+- Interactive multi-filter dashboard  
+- Real-time chart updates  
+- KPI summary indicators  
+- Regression-based trend visualization  
+- User-centered design  
+
+---
+
+## Insights & Impact
+
+This project demonstrates how data visualization supports decision-making by:
+
+- Identifying trends across fuel types  
+- Highlighting top-performing models  
+- Revealing relationships between price and performance  
+- Improving usability through iterative design  
+
+---
+
+## Notes
+
+This is a team project. I contributed to data analysis, visualization design, and dashboard development.
 
